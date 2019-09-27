@@ -5,10 +5,10 @@ import { GeolocatedProps, geolocated } from 'react-geolocated';
 const AdminPanel = (props: GeolocatedProps) => {
   return (
     <div style={{width: "100%", height: 500}}>
-      { props.coords &&
+      { props.coords && process.env["GOOGLE_API_KEY"] &&
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: 'AIzaSyCv4JBjNV_1b1-oJFCcsnYFG1T7oin86vY',
+          key: process.env["GOOGLE_API_KEY"],
         }}
         center={{
           lat: props.coords.latitude,
