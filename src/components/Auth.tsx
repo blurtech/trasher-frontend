@@ -6,9 +6,16 @@ const Auth = () => {
   return (
     <div className={styles.AuthForm}>
       <TextField
-        id="login"
+        id="username"
         label="Login"
         className={styles.textField}
+        margin="normal"
+      />
+      <TextField
+        id="password"
+        label="Password"
+        type="password"
+        className={classes.textField}
         margin="normal"
       />
     </div>
