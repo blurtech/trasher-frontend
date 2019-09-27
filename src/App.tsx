@@ -1,13 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Auth from './Auth';
+import styles from './App.module.scss';
 
 const App: React.FC = () => {
   return (
-    <div>
-      you gay
+    <div className={styles.App}>
+      <Auth />
     </div>
   );
-}
+};
 
 export default App;
