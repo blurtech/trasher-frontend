@@ -15,7 +15,7 @@ const Auth = () => {
         id="password"
         label="Password"
         type="password"
-        className={classes.textField}
+        className={styles.textField}
         margin="normal"
       />
     </div>
