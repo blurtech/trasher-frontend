@@ -1,36 +1,14 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200,
-    },
-    dense: {
-      marginTop: 19,
-    },
-    menu: {
-      width: 200,
-    },
-  }),
-);
+import styles from './Auth.module.scss';
 
 const Auth = () => {
-  const classes = useStyles();
-
   return (
-    <div className="Auth-form">
+    <div className={styles.AuthForm}>
       <TextField
         id="login"
         label="Login"
-        className={classes.textField}
+        className={styles.textField}
         margin="normal"
       />
     </div>
