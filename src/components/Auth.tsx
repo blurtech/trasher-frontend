@@ -1,10 +1,14 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 
 const Auth = () => {
+  const handleSubmit = () => {
+    return 0;
+  };
+
   return (
-    <div className={styles.AuthForm}>
+    <form onSubmit={handleSubmit} className={styles.AuthForm}>
       <TextField
         id="username"
         label="Login"
@@ -18,7 +22,10 @@ const Auth = () => {
         className={styles.textField}
         margin="normal"
       />
-    </div>
+      <Button variant="contained" color="primary" type="submit">
+        Authorize
+      </Button>
+    </form>
   );
 };
 
