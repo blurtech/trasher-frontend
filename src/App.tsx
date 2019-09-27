@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Auth from './components/Auth';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 import styles from './App.module.scss';
 
 const App: React.FC = () => {
@@ -7,7 +8,7 @@ const App: React.FC = () => {
 
   return (<>
     {authorized ?
-      <div /> :
+      <AdminPanel /> :
       <div className={styles.App}>
         <Auth/>
       </div>
