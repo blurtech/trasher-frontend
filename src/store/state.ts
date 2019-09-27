@@ -1,9 +1,13 @@
+import { IUser } from '../classes/models/IUser';
+
 export const initialState = {
-  isAuth: 'false'
+  currentUser: {},
+};
+
+export interface IState {
+  currentUser: IUser;
 }
 
-export type IState = typeof initialState
-
 export interface IAppState {
-  app: IState
+  app: IState;
 }

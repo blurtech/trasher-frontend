@@ -1,31 +1,43 @@
 import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
+import { IUser } from '../classes/models/IUser';
 
 const Auth = () => {
-  const handleSubmit = () => {
-    return 0;
-  };
+  const [user, setUser] = React.useState<IUser | undefined>(undefined);
+
+  const handleChange = (event: any) => {
+      setUser({
+          [event.target.name]: event.target.value
+      });
+  }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.AuthForm}>
+    <div className={styles.AuthForm}>
       <TextField
-        id="username"
-        label="Login"
+        name="username"
+        label="Имя пользователя"
         className={styles.textField}
         margin="normal"
+        onChange={handleChange}
       />
       <TextField
-        id="password"
-        label="Password"
+        name="password"
+        label="Пароль"
         type="password"
         className={styles.textField}
         margin="normal"
+        onChange={handleChange}
       />
-      <Button variant="contained" color="primary" type="submit">
-        Authorize
-      </Button>
-    </form>
+      <div className={styles.AuthButtons}>
+        <Button variant="contained" className={styles.button}>
+          Вход
+        </Button>
+        <Button variant="contained" className={styles.button}>
+          Регистрация
+        </Button>
+      </div>
+    </div>
   );
 };
 
