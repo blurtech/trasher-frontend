@@ -28,8 +28,15 @@ const Auth = () => {
   return (
     <div className="Auth-form">
       <TextField
-        id="login"
+        id="username"
         label="Login"
+        className={classes.textField}
+        margin="normal"
+      />
+      <TextField
+        id="password"
+        label="Password"
+        type="password"
         className={classes.textField}
         margin="normal"
       />
