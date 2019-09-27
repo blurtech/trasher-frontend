@@ -1,5 +1,5 @@
 import React from 'react';
-import Auth from './Auth';
+import Auth from './components/Auth';
 import styles from './App.module.scss';
 
 const App: React.FC = () => {
