@@ -1,5 +1,5 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 
 const Auth = () => {
@@ -7,17 +7,25 @@ const Auth = () => {
     <div className={styles.AuthForm}>
       <TextField
         id="username"
-        label="Login"
+        label="Логин"
         className={styles.textField}
         margin="normal"
       />
       <TextField
         id="password"
-        label="Password"
+        label="Пароль"
         type="password"
         className={styles.textField}
         margin="normal"
       />
+      <div className={styles.AuthButtons}>
+        <Button variant="contained" className={styles.button}>
+          Вход
+        </Button>
+        <Button variant="contained" className={styles.button}>
+          Регистрация
+        </Button>
+      </div>
     </div>
   );
 };
