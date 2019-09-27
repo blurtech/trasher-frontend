@@ -4,7 +4,7 @@ import AdminPanel from './components/AdminPanel/AdminPanel';
 import styles from './App.module.scss';
 
 const App: React.FC = () => {
-  const [authorized, setAuthorized] = useState<boolean>(false);
+  const [authorized, setAuthorized] = useState<boolean>(true);
 
   return (<>
     {authorized ?
