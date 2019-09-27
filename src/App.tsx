@@ -1,22 +1,11 @@
 import React from 'react';
+import Auth from './Auth';
 import styles from './App.module.scss';
 
 const App: React.FC = () => {
   return (
     <div className={styles.App}>
-      <header className={styles.AppHeader}>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className={styles.AppLink}
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Auth />
     </div>
   );
 };
