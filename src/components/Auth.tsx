@@ -4,7 +4,13 @@ import styles from './Auth.module.scss';
 import { IUser } from '../classes/models/IUser';
 import { register, auth } from '../classes/services/api/UserApi';
 
+enum Form {
+  Login = 'login',
+  Register = 'register',
+}
+
 const Auth = () => {
+  const [form, setForm] = React.useState<Form>(Form.Login);
   const [user, setUser] = React.useState<IUser | undefined>(undefined);
   const [message, setMessage] = React.useState<string | undefined>(undefined);
 
@@ -37,33 +43,73 @@ const Auth = () => {
         margin="normal"
         onChange={handleChange}
       />
+      {form === 'register' ? (
+        <>
+          <TextField
+            name="city"
+            label="Город"
+            className={styles.textField}
+            margin="normal"
+            onChange={event =>
+              user
+                ? setUser(
+                    Object.assign(user, {
+                      address: {
+                        [event.target.name]: event.target.value,
+                      },
+                    })
+                  )
+                : setUser({
+                    address: {
+                      [event.target.name]: event.target.value,
+                    },
+                  })
+            }
+          />
+        </>
+      ) : (
+        <></>
+      )}
       <div className={styles.AuthButtons}>
-        <Button
-          variant="contained"
-          className={styles.button}
-          onClick={() => {
-            console.log(user);
-            setMessage(undefined);
-            user && user.username && user.password
-              ? auth(user).then(result => console.log(result))
-              : setMessage('Empty username or password');
-          }}
-        >
-          Вход
-        </Button>
-        <Button
-          variant="contained"
-          className={styles.button}
-          onClick={() => {
-            console.log(user);
-            setMessage(undefined);
-            user && user.username && user.password
-              ? register(user).then(result => console.log(result))
-              : setMessage('Empty username or password');
-          }}
-        >
-          Регистрация
-        </Button>
+        {form === 'login' ? (
+          <Button
+            variant="contained"
+            className={styles.button}
+            onClick={() => {
+              setMessage(undefined);
+              user && user.username && user.password
+                ? auth(user).then(result => setUser(result.items))
+                : setMessage('Empty username or password');
+            }}
+          >
+            Вход
+          </Button>
+        ) : (
+          <Button className={styles.button} onClick={() => setForm(Form.Login)}>
+            Вход
+          </Button>
+        )}
+        {form === 'register' ? (
+          <Button
+            variant="contained"
+            className={styles.button}
+            onClick={() => {
+              setMessage(undefined);
+              user && user.username && user.password
+                ? register(user).then(result => setUser(result.items))
+                : setMessage('Empty username or password');
+            }}
+          >
+            Регистрация
+          </Button>
+        ) : (
+          <Button
+            className={styles.button}
+            onClick={() => setForm(Form.Register)}
+          >
+            Регистрация
+          </Button>
+        )}
       </div>
     </div>
   );

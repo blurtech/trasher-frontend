@@ -1,13 +1,18 @@
-import {IForm} from "./IForm";
+import { IForm } from './IForm';
 
 export interface IUser extends IForm {
-    _id?: string
-    username?: string
-    password?: string
-    experience?: {
-        currentexp: number
-        level: number
-    }
-    role?: string
-    token?: string
+  id?: string;
+  username?: string;
+  password?: string;
+  experience?: {
+    currentexp: number;
+    level: number;
+  };
+  address?: {
+    city?: string;
+    region?: string;
+    street?: string;
+  };
+  role?: string;
+  token?: string;
 }
