@@ -1,9 +1,16 @@
+import { IUser } from '../classes/models/IUser';
+import { ILitterStorage } from '../classes/models/ILitterStorage';
+
 export const initialState = {
-  isAuth: 'false'
+  currentUser: {},
+  litterStorages: [],
+};
+
+export interface IState {
+  currentUser: IUser;
+  litterStorages: ILitterStorage[];
 }
 
-export type IState = typeof initialState
-
 export interface IAppState {
-  app: IState
+  app: IState;
 }

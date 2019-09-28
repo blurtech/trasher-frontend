@@ -1,0 +1,23 @@
+$default-spacer: 8px;
+
+/* SCREENS */
+$screen-sm-min: 768px;
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-md-min: 992px;
+$screen-sm-max: ($screen-md-min - 1);
+$screen-lg-min: 1200px;
+$screen-md-max: ($screen-lg-min - 1);
+
+/* SIZES */
+$s-1: 8.33%;
+$s-2: 16.66%;
+$s-3: 25%;
+$s-4: 33.33%;
+$s-5: 41.66%;
+$s-6: 50%;
+$s-7: 58.33%;
+$s-8: 66.66%;
+$s-9: 75%;
+$s-10: 83.33%;
+$s-11: 91.66%;
+$s-12: 100%;

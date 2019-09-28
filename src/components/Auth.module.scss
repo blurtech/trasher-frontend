@@ -1,0 +1,22 @@
+@import '../assets/bindings';
+
+.Auth {
+  &Form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &Buttons {
+    display: flex;
+  }
+}
+
+.button {
+  margin: $default-spacer/2;
+}
+
+.textField {
+  margin-left: $default-spacer;
+  margin-right: $default-spacer;
+  width: 200px;
+}
