@@ -1,4 +1,4 @@
-export const setUserLocal = (token: string) => set(`trasher_user`, token);
+export const setUserLocal = (user: string) => set(`trasher_user`, user);
 
 export const clearUser = () => remove(`trasher_user`);
 

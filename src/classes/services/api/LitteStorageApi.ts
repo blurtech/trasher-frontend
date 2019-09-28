@@ -13,7 +13,7 @@ export const fetchLitterStoragesByCity = async (
     headers: { Authorization: `Bearer ${token}` },
   });
   return {
-    items: result.data || [],
-    total: result.data.length || 0,
+    items: result.data.data || [],
+    total: result.data.data.length || 0,
   };
 };

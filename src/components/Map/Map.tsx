@@ -4,11 +4,7 @@ import { geolocated, GeolocatedProps } from 'react-geolocated';
 import { Icon } from '@iconify/react';
 import recycleIcon from '@iconify/icons-mdi/recycle';
 import nanoid from 'nanoid';
-
-interface IPoint {
-  lat: number;
-  lng: number;
-}
+import { ILitterStorage } from '../../classes/models/ILitterStorage';
 
 interface IClickEventValue {
   x: number;
@@ -22,23 +18,23 @@ const Point = (props: any) => (
   <Icon height={40} width={40} icon={recycleIcon} />
 );
 
-const Map = (props: GeolocatedProps | any) => {
-  const [points, setPoints] = React.useState<IPoint[] | undefined>([]);
+interface IProps {
+  points: ILitterStorage[];
+  city: string;
+}
+
+const Map = (props: GeolocatedProps | IProps | any) => {
+  const [points, setPoints] = React.useState<ILitterStorage[]>([]);
 
   const handleClick = (value: IClickEventValue) => {
     console.log(value.lat, value.lng);
   };
 
   React.useEffect(() => {
-    props.coords &&
-      setPoints([
-        {
-          lat: props.coords.latitude,
-          lng: props.coords.longitude,
-        },
-      ]);
-  }, [props.coords]);
+    props.points && setPoints(props.points);
+  }, [props.points]);
 
+  console.log(points.length > 0, points);
   return (
     <>
       {props.coords && process.env.REACT_APP_API_KEY && (
@@ -51,13 +47,17 @@ const Map = (props: GeolocatedProps | any) => {
             lat: props.coords.latitude,
             lng: props.coords.longitude,
           }}
-          zoom={15}
+          zoom={10}
           yesIWantToUseGoogleMapApiInternals
           onClick={handleClick}
         >
-          {points &&
+          {points.length > 0 &&
             points.map(point => (
-              <Point lat={point.lat} lng={point.lng} key={nanoid(8)} />
+              <Point
+                lat={point.latlng && point.latlng.latitude}
+                lng={point.latlng && point.latlng.longitude}
+                key={nanoid(8)}
+              />
             ))}
         </GoogleMapReact>
       )}

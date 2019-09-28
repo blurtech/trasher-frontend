@@ -4,6 +4,7 @@ import Map from '../Map/Map';
 import Menu from '../Menu/Menu';
 import { fetchLitterStoragesByCity } from '../../classes/services/api/LitteStorageApi';
 import { ILitterStorage } from '../../classes/models/ILitterStorage';
+import { appUpdateState } from '../../store';
 
 interface IProps {
   currentUser: IUser;
@@ -17,23 +18,27 @@ const AdminPanel = (props: IProps | any) => {
 
   React.useEffect(() => {
     props.currentUser && setUser(props.currentUser);
-  }, [props.currentUser]);
+  }, []);
 
   React.useEffect(() => {
     user &&
       user.address &&
       user.address.city &&
-      fetchLitterStoragesByCity(user.address.city).then(data =>
-        setLitterStorages(data.items)
-      );
-    console.log(litterStorages);
+      fetchLitterStoragesByCity(user.address.city).then(data => {
+        setLitterStorages(data.items);
+        appUpdateState(s => {
+          s.litterStorages = data.items;
+        });
+      });
   }, [user]);
 
   return (
     <div style={{ width: '100%', height: 500 }}>
       {user && user.username}
       <Menu />
-      <Map city={user && user.city} />
+      {litterStorages.length > 0 && (
+        <Map city={user && user.city} points={litterStorages} />
+      )}
     </div>
   );
 };
