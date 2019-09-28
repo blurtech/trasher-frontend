@@ -1,0 +1,26 @@
+@import '../../assets/bindings';
+
+.fullMenu {
+  display: flex;
+}
+
+.collapseButton {
+  width: 0;
+  &Open {
+    width: 350px;
+  }
+}
+
+.button {
+  margin-bottom: $default-spacer;
+}
+
+.menu {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  width: 0;
+  &Open {
+    width: 350px;
+  }
+}

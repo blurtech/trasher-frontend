@@ -1,7 +1,7 @@
 import React from 'react';
 import { IUser } from '../../classes/models/IUser';
-import Map from '../Map/Map'
-import Menu from "../Menu/Menu";
+import Map from '../Map/Map';
+import Menu from '../Menu/Menu';
 
 interface IProps {
   currentUser: IUser;
@@ -17,10 +17,10 @@ const AdminPanel = (props: IProps | any) => {
   return (
     <div style={{ width: '100%', height: 500 }}>
       {user && user.username}
-      <Menu/>
-      <Map />
+      <Menu />
+      <Map city={user && user.city} />
     </div>
   );
 };
 
-export default  AdminPanel;
+export default AdminPanel;
