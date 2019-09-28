@@ -1,5 +1,7 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
+import Modal, {IPoint} from '../Modal/Modal';
+import styles from './Map.module.scss';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
 import { Icon } from '@iconify/react';
 import recycleIcon from '@iconify/icons-mdi/recycle';
@@ -25,10 +27,15 @@ interface IProps {
 
 const Map = (props: GeolocatedProps | IProps | any) => {
   const [points, setPoints] = React.useState<ILitterStorage[]>([]);
+  const [currentPoint, setCurrentPoint] = React.useState<IPoint | undefined>();
 
   const handleClick = (value: IClickEventValue) => {
-    console.log(value.lat, value.lng);
+    setCurrentPoint({ lat: value.lat, lng: value.lng });
   };
+
+  React.useEffect(() => {
+    console.log(currentPoint);
+  }, [currentPoint]);
 
   React.useEffect(() => {
     props.points && setPoints(props.points);
@@ -61,6 +68,19 @@ const Map = (props: GeolocatedProps | IProps | any) => {
             ))}
         </GoogleMapReact>
       )}
+      {currentPoint ? (
+        <>
+          <div
+            className={styles.ModalBackground}
+            style={{
+              height: document.documentElement.clientHeight,
+              width: document.documentElement.clientWidth,
+            }}
+            onClick={() => setCurrentPoint(undefined)}
+          />
+          <Modal {...currentPoint} />
+        </>
+      ) : null}
     </>
   );
 };

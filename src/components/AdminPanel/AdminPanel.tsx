@@ -33,7 +33,11 @@ const AdminPanel = (props: IProps | any) => {
   }, [user]);
 
   return (
-    <div style={{ width: '100%', height: 500 }}>
+    <div style={{
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight-20,
+      margin: -8
+    }}>
       {user && user.username}
       <Menu />
       {litterStorages.length > 0 && (
