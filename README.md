@@ -12,6 +12,13 @@ Table: 15
 `npm start` - start nodejs application  
 `npm run build` - build application  
 
+# Contributors
+* **Alexandr Sidorenko** - *Lead Developer* - [MacOSO](https://github.com/MacOSO)  
+[![Twitter Follow](https://img.shields.io/twitter/follow/batyshkaLenin.svg?style=social&label=Follow)](https://twitter.com/batyshkaLenin)
+* **Ilya Savenkov** - *Frontend Developer* - [Puzovoz](https://github.com/Puzovoz)  
+[![Twitter Follow](https://img.shields.io/twitter/follow/ave_ave_avtf.svg?style=social&label=Follow)](https://twitter.com/ave_ave_avtf) 
+* **Alexandr Bobrov** - *Frontend Developer, Designer* - [AlexBobrov](https://github.com/AlexBobrov)  
+
 ## Deploy
 
 Autodeploy to Heroku:
