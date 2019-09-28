@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { IAppState } from './store/state';
 import { IUser } from './classes/models/IUser';
 import { getUser } from './classes/helpers/StorageHelper';
+import {isEmpty} from "./classes/utils/Checker";
 
 interface IProps {
   currentUser: IUser;
@@ -22,7 +23,7 @@ const App = (props: IProps) => {
       setUser(JSON.parse(getUser()));
       setAuth(true);
     }
-    if (props.currentUser) {
+    if (!isEmpty(props.currentUser)) {
       setUser(props.currentUser);
       setAuth(true);
     }
