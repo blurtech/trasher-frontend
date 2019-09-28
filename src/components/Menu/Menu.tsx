@@ -23,7 +23,7 @@ const Menu = () => {
     <div className={styles.fullMenu}>
       <div className={open ? styles.collapseButtonOpen : styles.collapseButton}>
         <div
-          className={styles.button}
+          className={open ? styles.buttonOpen : styles.button}
           onClick={handleOpen}
         >
           {open ? <Icon icon={chevronLeft} /> : <Icon icon={chevronRight} />}
