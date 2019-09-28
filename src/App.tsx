@@ -20,7 +20,7 @@ const App = (props: IProps) => {
     } else {
       setUser(props.currentUser)
     }
-  }, [props.currentUser, getUser]);
+  }, [props.currentUser]);
 
   return (
     <>
