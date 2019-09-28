@@ -9,7 +9,11 @@ enum Form {
   Register = 'register',
 }
 
-const Auth = () => {
+interface IProps {
+  onAuth: () => void;
+}
+
+const Auth = (props: IProps) => {
   const [form, setForm] = React.useState<Form>(Form.Login);
   const [user, setUser] = React.useState<IUser | undefined>(undefined);
   const [message, setMessage] = React.useState<string | undefined>(undefined);
@@ -78,7 +82,13 @@ const Auth = () => {
             onClick={() => {
               setMessage(undefined);
               user && user.username && user.password
-                ? auth(user).then(result => setUser(result.items))
+                ? auth(user).then(result => {
+                    setUser({
+                      ...result.data.user,
+                      token: result.data.token,
+                    });
+                    props.onAuth();
+                  })
                 : setMessage('Empty username or password');
             }}
           >
@@ -96,7 +106,13 @@ const Auth = () => {
             onClick={() => {
               setMessage(undefined);
               user && user.username && user.password
-                ? register(user).then(result => setUser(result.items))
+                ? register(user).then(result => {
+                    setUser({
+                      ...result.data.user,
+                      token: result.data.token,
+                    });
+                    props.onAuth();
+                  })
                 : setMessage('Empty username or password');
             }}
           >
