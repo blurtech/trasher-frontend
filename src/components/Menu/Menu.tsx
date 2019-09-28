@@ -13,6 +13,9 @@ import MailIcon from '@material-ui/icons/Mail';
 import Icon from '@iconify/react';
 import chevronLeft from '@iconify/icons-mdi/chevron-left';
 import chevronRight from '@iconify/icons-mdi/chevron-right';
+import { clearUser, getUser } from '../../classes/helpers/StorageHelper';
+import nanoid from 'nanoid';
+import { appUpdateState } from '../../store';
 
 const Menu = () => {
   const [open, setOpen] = React.useState<boolean>(true);
@@ -39,8 +42,7 @@ const Menu = () => {
             paper: styles.drawerPaper,
           }}
         >
-          <div className={styles.drawerHeader}>
-          </div>
+          <div className={styles.drawerHeader}></div>
           <Divider />
           <List>
             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
@@ -62,6 +64,18 @@ const Menu = () => {
                 <ListItemText primary={text} />
               </ListItem>
             ))}
+            <ListItem
+              button
+              key={nanoid(8)}
+              onClick={() => {
+                clearUser();
+                appUpdateState(s => {
+                  s.currentUser = {};
+                });
+              }}
+            >
+              <ListItemText primary={'Logout'} />
+            </ListItem>
           </List>
         </Drawer>
       </div>
