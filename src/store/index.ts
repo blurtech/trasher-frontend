@@ -3,7 +3,6 @@ import { rootReducer, APP_NEXT_STATE } from './reducer';
 import produce from 'immer'
 import { IAppState, IState } from './state';
 
-
 let store: Store<IAppState>;
 
 export const initStore = () => 
@@ -11,8 +10,6 @@ export const initStore = () =>
         rootReducer,
         {}
     );
-
-
 
 export const getState = () => store.getState().app;
 

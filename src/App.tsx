@@ -12,23 +12,28 @@ interface IProps {
 }
 
 const App = (props: IProps) => {
-  const [user, setUser] = useState<IUser | undefined>(getUser().length > 0 ? JSON.parse(getUser()) : undefined);
+  const [user, setUser] = useState<IUser | undefined>(
+    getUser().length > 0 ? JSON.parse(getUser()) : undefined
+  );
+  const [isAuth, setAuth] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (getUser().length > 0) {
-      setUser(JSON.parse(getUser()) )
-    } else {
-      setUser(props.currentUser)
+      setUser(JSON.parse(getUser()));
+      setAuth(true);
+    }
+    if (props.currentUser) {
+      setUser(props.currentUser);
+      setAuth(true);
     }
   }, [props.currentUser]);
-
   return (
     <>
-      {user ? (
-          <AdminPanel currentUser={user} />
+      {isAuth ? (
+        <AdminPanel currentUser={user} />
       ) : (
         <div className={styles.App}>
-          <Auth />
+          <Auth setAuth={() => setAuth(true)} />
         </div>
       )}
     </>

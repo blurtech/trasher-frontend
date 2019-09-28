@@ -12,6 +12,7 @@ enum Form {
 }
 
 interface IProps {
+  setAuth: () => void;
 }
 
 const Auth = (props: IProps) => {
@@ -93,6 +94,7 @@ const Auth = (props: IProps) => {
                     appUpdateState(s => {
                       s.currentUser = userResult;
                     });
+                    props.setAuth();
                   })
                 : setMessage('Empty username or password');
             }}
@@ -121,6 +123,7 @@ const Auth = (props: IProps) => {
                     appUpdateState(s => {
                       s.currentUser = userResult;
                     });
+                    props.setAuth();
                   })
                 : setMessage('Empty username or password');
             }}
