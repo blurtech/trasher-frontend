@@ -12,9 +12,11 @@ export const register = async (
   user: IUser
 ): Promise<AxiosResponse<IUserFetch>> => {
   user.role = 'admin';
-  return await axios.post(url + `register`, user);
+  const result = await axios.post(url + `register`, user);
+  return result.data;
 };
 
 export const auth = async (user: IUser): Promise<AxiosResponse<IUserFetch>> => {
-  return await axios.post(url, user);
+  const result = await axios.post(url, user);
+  return result.data;
 };

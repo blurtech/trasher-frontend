@@ -9,5 +9,5 @@ export interface IState {
 }
 
 export interface IAppState {
-  app: IState;
+  app: IState
 }

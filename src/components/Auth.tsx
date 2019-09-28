@@ -3,6 +3,8 @@ import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 import { IUser } from '../classes/models/IUser';
 import { register, auth } from '../classes/services/api/UserApi';
+import { appUpdateState } from '../store';
+import { setUserLocal } from '../classes/helpers/StorageHelper';
 
 enum Form {
   Login = 'login',
@@ -10,7 +12,6 @@ enum Form {
 }
 
 interface IProps {
-  onAuth: () => void;
 }
 
 const Auth = (props: IProps) => {
@@ -83,11 +84,15 @@ const Auth = (props: IProps) => {
               setMessage(undefined);
               user && user.username && user.password
                 ? auth(user).then(result => {
-                    setUser({
+                    const userResult = {
                       ...result.data.user,
                       token: result.data.token,
+                    };
+                    setUser(userResult);
+                    setUserLocal(JSON.stringify(userResult));
+                    appUpdateState(s => {
+                      s.currentUser = userResult;
                     });
-                    props.onAuth();
                   })
                 : setMessage('Empty username or password');
             }}
@@ -107,11 +112,15 @@ const Auth = (props: IProps) => {
               setMessage(undefined);
               user && user.username && user.password
                 ? register(user).then(result => {
-                    setUser({
+                    const userResult = {
                       ...result.data.user,
                       token: result.data.token,
+                    };
+                    setUser(userResult);
+                    setUserLocal(JSON.stringify(userResult));
+                    appUpdateState(s => {
+                      s.currentUser = userResult;
                     });
-                    props.onAuth();
                   })
                 : setMessage('Empty username or password');
             }}
