@@ -15,7 +15,6 @@ import Icon from '@iconify/react';
 import chevronLeft from '@iconify/icons-mdi/chevron-left';
 import chevronRight from '@iconify/icons-mdi/chevron-right';
 import { clearUser } from '../../classes/helpers/StorageHelper';
-import nanoid from 'nanoid';
 import { appUpdateState} from '../../store';
 import SearchIcon from '@material-ui/icons/Search';
 import { IUser } from '../../classes/models/IUser';
