@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 import { IUser } from '../classes/models/IUser';
-import UserStoreService from "../classes/services/UserStoreService";
-import Cities from "./Auth/Cities";
+import UserStoreService from '../classes/services/UserStoreService';
+import Cities from './Auth/Cities';
 
 enum Form {
   Login = 'login',
@@ -18,7 +18,6 @@ const Auth = (props: IProps) => {
   const [form, setForm] = React.useState<Form>(Form.Login);
   const [user, setUser] = React.useState<IUser | undefined>(undefined);
   const [message, setMessage] = React.useState<string | undefined>(undefined);
-  const [city, setCity] = React.useState()
 
   const handleChange = (event: any) => {
     user
@@ -49,8 +48,25 @@ const Auth = (props: IProps) => {
         margin="normal"
         onChange={handleChange}
       />
-      {form === 'register' ?
-        <Cities onChange={(item: any) => setCity(item)} />: (
+      {form === 'register' ? (
+        <Cities
+          onChange={(item: any) =>{
+              console.log(item)
+              user
+              ? setUser({
+                  ...user,
+                  address: {
+                    city: item.value,
+                  },
+                })
+              : setUser({
+                  address: {
+                    city: item.value,
+                  },
+                })}
+          }
+        />
+      ) : (
         <></>
       )}
       <div className={styles.AuthButtons}>

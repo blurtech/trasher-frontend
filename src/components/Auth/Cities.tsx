@@ -1,37 +1,29 @@
-import React, { CSSProperties, HTMLAttributes } from 'react'
-import clsx from 'clsx'
-import Select from 'react-select'
-import Typography from '@material-ui/core/Typography'
-import NoSsr from '@material-ui/core/NoSsr'
-import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField'
-import Paper from '@material-ui/core/Paper'
-import Chip from '@material-ui/core/Chip'
-import MenuItem from '@material-ui/core/MenuItem'
-import CancelIcon from '@material-ui/icons/Cancel'
-import { ValueContainerProps } from 'react-select/src/components/containers'
-import { ControlProps } from 'react-select/src/components/Control'
-import { MenuProps, NoticeProps } from 'react-select/src/components/Menu'
-import { MultiValueProps } from 'react-select/src/components/MultiValue'
-import { OptionProps } from 'react-select/src/components/Option'
-import { PlaceholderProps } from 'react-select/src/components/Placeholder'
-import { SingleValueProps } from 'react-select/src/components/SingleValue'
-import { ValueType } from 'react-select/src/types'
-import { Omit } from '@material-ui/types'
-import styles from './Cities.module.scss'
+import React, { CSSProperties, HTMLAttributes } from 'react';
+import clsx from 'clsx';
+import Select from 'react-select';
+import Typography from '@material-ui/core/Typography';
+import NoSsr from '@material-ui/core/NoSsr';
+import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Chip from '@material-ui/core/Chip';
+import MenuItem from '@material-ui/core/MenuItem';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { ValueContainerProps } from 'react-select/src/components/containers';
+import { ControlProps } from 'react-select/src/components/Control';
+import { MenuProps, NoticeProps } from 'react-select/src/components/Menu';
+import { MultiValueProps } from 'react-select/src/components/MultiValue';
+import { OptionProps } from 'react-select/src/components/Option';
+import { PlaceholderProps } from 'react-select/src/components/Placeholder';
+import { SingleValueProps } from 'react-select/src/components/SingleValue';
+import { ValueType } from 'react-select/src/types';
+import { Omit } from '@material-ui/types';
+import styles from './Cities.module.scss';
+import StatisticsStoreService from '../../classes/services/StatisticsStoreService';
 
 interface OptionType {
-  label: string
-  value: string
+  label: string;
+  value: string;
 }
-
-const suggestions: OptionType[] = [
-  { label: 'Новосибирск' },
-  { label: 'Казань' },
-  { label: 'Москва' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}))
 
 const NoOptionsMessage = (props: NoticeProps<OptionType>) => {
   return (
@@ -42,15 +34,15 @@ const NoOptionsMessage = (props: NoticeProps<OptionType>) => {
     >
       {props.children}
     </Typography>
-  )
-}
+  );
+};
 
 type InputComponentProps = Pick<BaseTextFieldProps, 'inputRef'> &
-  HTMLAttributes<HTMLDivElement>
+  HTMLAttributes<HTMLDivElement>;
 
 const inputComponent = ({ inputRef, ...props }: InputComponentProps) => {
-  return <div ref={inputRef} {...props} />
-}
+  return <div ref={inputRef} {...props} />;
+};
 
 const Control = (props: ControlProps<OptionType>) => {
   const {
@@ -58,7 +50,7 @@ const Control = (props: ControlProps<OptionType>) => {
     innerProps,
     innerRef,
     selectProps: { classes, TextFieldProps },
-  } = props
+  } = props;
 
   return (
     <TextField
@@ -75,8 +67,8 @@ const Control = (props: ControlProps<OptionType>) => {
       }}
       {...TextFieldProps}
     />
-  )
-}
+  );
+};
 
 const Option = (props: OptionProps<OptionType>) => {
   return (
@@ -91,14 +83,14 @@ const Option = (props: OptionProps<OptionType>) => {
     >
       {props.children}
     </MenuItem>
-  )
-}
+  );
+};
 
 type MuiPlaceholderProps = Omit<PlaceholderProps<OptionType>, 'innerProps'> &
-  Partial<Pick<PlaceholderProps<OptionType>, 'innerProps'>>
+  Partial<Pick<PlaceholderProps<OptionType>, 'innerProps'>>;
 
 const Placeholder = (props: MuiPlaceholderProps) => {
-  const { selectProps, innerProps = {}, children } = props
+  const { selectProps, innerProps = {}, children } = props;
   return (
     <Typography
       color="textSecondary"
@@ -107,8 +99,8 @@ const Placeholder = (props: MuiPlaceholderProps) => {
     >
       {children}
     </Typography>
-  )
-}
+  );
+};
 
 const SingleValue = (props: SingleValueProps<OptionType>) => {
   return (
@@ -118,16 +110,16 @@ const SingleValue = (props: SingleValueProps<OptionType>) => {
     >
       {props.children}
     </Typography>
-  )
-}
+  );
+};
 
 const ValueContainer = (props: ValueContainerProps<OptionType>) => {
   return (
     <div className={props.selectProps.classes.valueContainer}>
       {props.children}
     </div>
-  )
-}
+  );
+};
 
 const MultiValue = (props: MultiValueProps<OptionType>) => {
   return (
@@ -140,8 +132,8 @@ const MultiValue = (props: MultiValueProps<OptionType>) => {
       onDelete={props.removeProps.onClick}
       deleteIcon={<CancelIcon {...props.removeProps} />}
     />
-  )
-}
+  );
+};
 
 const Menu = (props: MenuProps<OptionType>) => {
   return (
@@ -152,8 +144,8 @@ const Menu = (props: MenuProps<OptionType>) => {
     >
       {props.children}
     </Paper>
-  )
-}
+  );
+};
 
 const components = {
   Control,
@@ -164,19 +156,30 @@ const components = {
   Placeholder,
   SingleValue,
   ValueContainer,
-}
+};
 
 interface IProps {
-  onChange: (arg0: any) => void
+  onChange: (arg0: any) => void;
 }
 
 const Cities = (props: IProps) => {
   const { onChange } = props;
   const [single, setSingle] = React.useState<ValueType<OptionType>>(null);
+  const [cities, setCities] = React.useState<OptionType[]>([]);
+
+  React.useEffect(() => {
+    StatisticsStoreService.getCities().then(results => {
+      const citiesArray = results.items.map(suggestion => ({
+        value: suggestion,
+        label: suggestion,
+      }));
+      setCities(citiesArray);
+    });
+  }, []);
 
   const handleChangeSingle = (value: ValueType<OptionType>) => {
     setSingle(value);
-    onChange(single);
+    onChange(value);
   };
 
   const selectStyles = {
@@ -205,13 +208,13 @@ const Cities = (props: IProps) => {
             },
           }}
           placeholder="Выберите город"
-          options={suggestions}
+          options={cities}
           components={components}
           value={single}
           onChange={handleChangeSingle}
         />
       </NoSsr>
     </div>
-  )
-}
-export default Cities
+  );
+};
+export default Cities;
