@@ -21,6 +21,7 @@ import { IUser } from '../../classes/models/IUser';
 
 interface IProps {
     user?: IUser
+    pointData?: any
 }
 
 const Menu = (props: IProps) => {
@@ -34,7 +35,7 @@ const Menu = (props: IProps) => {
   const handleOpen = () => setOpen(prevState => !prevState);
 
   return (
-    <div className={styles.fullMenu}>
+    <div className={open ? styles.fullMenu : styles['fullMenu--closed']}>
       <div className={open ? styles.collapseButtonOpen : styles.collapseButton}>
         <div
           className={open ? styles.buttonOpen : styles.button}
@@ -83,6 +84,7 @@ const Menu = (props: IProps) => {
               <ListItemText primary={'Logout'} />
             </ListItem>
           </List>
+          {props.pointData && <span>Точка: {`${props.pointData.lat} ${props.pointData.lng}`}</span> }
         </Drawer>
       </div>
     </div>

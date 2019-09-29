@@ -11,6 +11,7 @@ interface IProps {
 
 const AdminPanel = (props: IProps | any) => {
   const [user, setUser] = React.useState<IUser | undefined>(undefined);
+  const [pointData, setPointData] = React.useState<any>(undefined);
   const [litterStorages, setLitterStorages] = React.useState<ILitterStorage[]>(
     []
   );
@@ -27,16 +28,15 @@ const AdminPanel = (props: IProps | any) => {
         setLitterStorages(data.items);
       });
   }, [user]);
-
   return (
     <div style={{
       width: document.documentElement.clientWidth,
       height: document.documentElement.clientHeight-20,
       margin: -8
     }}>
-      <Menu user={user}/>
+      <Menu pointData={pointData} user={user}/>
       {litterStorages.length > 0 && (
-        <Map city={user && user.city} points={litterStorages} />
+        <Map city={user && user.city} points={litterStorages} setPoint={(data:any) => {setPointData(data)}} />
       )}
     </div>
   );

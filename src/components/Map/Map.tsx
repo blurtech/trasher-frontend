@@ -20,6 +20,7 @@ const Point = (props: any) => <img height={40} width={40} src={recycleIcon} />;
 interface IProps {
   points: ILitterStorage[];
   city: string;
+  setPoint?: any
 }
 
 const Map = (props: GeolocatedProps | IProps | any) => {
@@ -42,6 +43,7 @@ const Map = (props: GeolocatedProps | IProps | any) => {
 
   const handleClick = (value: IClickEventValue) => {
     setCurrentPoint({ lat: value.lat, lng: value.lng });
+    props.setPoint({ lat: value.lat, lng: value.lng })
   };
 
   React.useEffect(() => {
@@ -86,19 +88,6 @@ const Map = (props: GeolocatedProps | IProps | any) => {
             ))}
         </GoogleMapReact>
       )}
-      {currentPoint ? (
-        <>
-          <div
-            className={styles.ModalBackground}
-            style={{
-              height: document.documentElement.clientHeight,
-              width: document.documentElement.clientWidth,
-            }}
-            onClick={() => setCurrentPoint(undefined)}
-          />
-          <Modal {...currentPoint} />
-        </>
-      ) : null}
     </>
   );
 };

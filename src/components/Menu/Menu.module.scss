@@ -2,6 +2,11 @@
 
 .fullMenu {
   display: flex;
+  margin-left: 185px;
+
+  &--closed {
+    margin-left: 5px;
+  }
 }
 
 .collapseButton {
