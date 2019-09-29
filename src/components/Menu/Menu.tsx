@@ -13,7 +13,6 @@ import {
 import styles from './Menu.module.scss';
 import Icon from '@iconify/react';
 import chevronLeft from '@iconify/icons-mdi/chevron-left';
-import chevronRight from '@iconify/icons-mdi/chevron-right';
 import { clearUser } from '../../classes/helpers/StorageHelper';
 import { appUpdateState } from '../../store';
 import SearchIcon from '@material-ui/icons/Search';
@@ -24,29 +23,26 @@ interface IProps {
   pointData?: any;
   logout?: any;
   litterStorageData?: any;
+  open: boolean;
 }
 
 const Menu = (props: IProps) => {
-  const [open, setOpen] = React.useState<boolean>(true);
+  const [open, setOpen] = React.useState<boolean>(props.open);
   const [user, setUser] = React.useState<IUser | undefined>(undefined);
 
   React.useEffect(() => {
     setUser(props.user);
   }, [props.user]);
 
-  const handleOpen = () => setOpen(prevState => !prevState);
+  React.useEffect(() => {
+    setOpen(true);
+  }, [props.open]);
+
+  const handleOpen = (where: boolean) => setOpen(where);
 
   console.log(props.litterStorageData);
   return (
-    <div className={open ? styles.fullMenu : styles['fullMenu--closed']}>
-      <div className={open ? styles.collapseButtonOpen : styles.collapseButton}>
-        <div
-          className={open ? styles.buttonOpen : styles.button}
-          onClick={handleOpen}
-        >
-          {open ? <Icon icon={chevronLeft} /> : <Icon icon={chevronRight} />}
-        </div>
-      </div>
+    <div>
       <div className={open ? styles.menuOpen : styles.menu}>
         <Drawer
           className={styles.drawer}
@@ -58,28 +54,33 @@ const Menu = (props: IProps) => {
           }}
         >
           <div className={styles.drawerHeader}>
-            <Paper className={styles.root}>
-              <InputBase
-                className={styles.input}
-                placeholder="Поиск в Trasher"
-                inputProps={{ 'aria-label': 'Поиск в Trasher' }}
-              />
-              <IconButton className={styles.iconButton} aria-label="search">
-                <SearchIcon />
-              </IconButton>
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  clearUser();
-                  props.logout();
-                  appUpdateState(s => {
-                    s.currentUser = {};
-                  });
-                }}
-              >
-                Log out
-              </Button>
-            </Paper>
+            <div className={styles.headerMenu}>
+              <Paper className={styles.root}>
+                <InputBase
+                  className={styles.input}
+                  placeholder="Поиск в Trasher"
+                  inputProps={{ 'aria-label': 'Поиск в Trasher' }}
+                />
+                <IconButton className={styles.iconButton} aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    clearUser();
+                    props.logout();
+                    appUpdateState(s => {
+                      s.currentUser = {};
+                    });
+                  }}
+                >
+                  Log out
+                </Button>
+              </Paper>
+              <div className={styles.backBTN} onClick={() => handleOpen(false)}>
+                <Icon icon={chevronLeft} />
+              </div>
+            </div>
           </div>
           <Divider />
           <List>
