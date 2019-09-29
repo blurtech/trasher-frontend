@@ -8,6 +8,7 @@ import {
   ListItem,
   ListItemText,
   Paper,
+  Button
 } from '@material-ui/core';
 import styles from './Menu.module.scss';
 import Icon from '@iconify/react';
@@ -65,16 +66,8 @@ const Menu = (props: IProps) => {
               <IconButton className={styles.iconButton} aria-label="search">
                 <SearchIcon />
               </IconButton>
-            </Paper>
-          </div>
-          <div>
-              {user && user.address && `Вы вошли как ${user.username}, вы оператор города ${user.address.city}`}
-          </div>
-          <Divider />
-          <List>
-            <ListItem
-              button
-              key={nanoid(8)}
+              <Button
+              variant="outlined"
               onClick={() => {
                 clearUser();
                 props.logout();
@@ -82,11 +75,22 @@ const Menu = (props: IProps) => {
                   s.currentUser = {};
                 });
               }}
+              >
+                Log out
+              </Button>
+            </Paper>
+          </div>
+          <Divider />
+          <List>
+          <ListItem
             >
-              <ListItemText primary={'Logout'} />
+              <ListItemText secondary={user && user.address && `Вы вошли как ${user.username}, вы оператор города ${user.address.city}`} />
+            </ListItem>
+            <ListItem
+            >
+              <ListItemText primary={props.pointData && <span>{`${props.pointData.lat} ${props.pointData.lng}`}</span> } />
             </ListItem>
           </List>
-          {props.pointData && <span>Точка: {`${props.pointData.lat} ${props.pointData.lng}`}</span> }
         </Drawer>
       </div>
     </div>

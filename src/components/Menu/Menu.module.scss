@@ -2,7 +2,7 @@
 
 .fullMenu {
   display: flex;
-  margin-left: 185px;
+  margin-left: 220px;
 
   &--closed {
     margin-left: 5px;
@@ -31,4 +31,13 @@
   &Open {
     width: 350px;
   }
+}
+
+.input {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+.drawer {
+  max-width: 358px;
 }
