@@ -21,3 +21,13 @@ export const fetchLitterStoragesByCity = async (
     total: result.data.data.length || 0,
   };
 };
+
+export const addLitterStorage = async (
+    litterStorage: ILitterStorage
+): Promise<IFetch<ILitterStorage>> => {
+  const result = await axios.post(url, litterStorage, getHeader());
+  return {
+    items: result.data.data || [],
+    total: result.data.data.length || 0,
+  };
+};

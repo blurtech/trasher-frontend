@@ -1,6 +1,9 @@
 import { IFetch } from '../models/IFetch';
 import { ILitterStorage } from '../models/ILitterStorage';
-import { fetchLitterStoragesByCity } from './api/LitterStorageApi';
+import {
+  addLitterStorage,
+  fetchLitterStoragesByCity,
+} from './api/LitterStorageApi';
 import { appUpdateState, getState } from '../../store';
 
 class LitterStorageStoreService {
@@ -15,6 +18,18 @@ class LitterStorageStoreService {
         total: state.length,
       };
     } else result = await fetchLitterStoragesByCity(city);
+    appUpdateState(s => {
+      s.litterStorages = result.items;
+    });
+    return result;
+  };
+
+  public createLitterStorage = async (
+    litterStorage: ILitterStorage
+  ): Promise<IFetch<ILitterStorage>> => {
+    let state = getState().litterStorages;
+    const result = await addLitterStorage(litterStorage);
+    if (state.length > 0) state.push(result.items);
     appUpdateState(s => {
       s.litterStorages = result.items;
     });
