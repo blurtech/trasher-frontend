@@ -13,6 +13,8 @@
 }
 
 .button {
+  position: absolute;
+  z-index: 1000;
   width: 40px;
   height: 40px;
   border-radius: 50%;
