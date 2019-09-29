@@ -22,6 +22,7 @@ import { IUser } from '../../classes/models/IUser';
 interface IProps {
     user?: IUser
     pointData?: any
+    logout?: any
 }
 
 const Menu = (props: IProps) => {
@@ -76,6 +77,7 @@ const Menu = (props: IProps) => {
               key={nanoid(8)}
               onClick={() => {
                 clearUser();
+                props.logout();
                 appUpdateState(s => {
                   s.currentUser = {};
                 });

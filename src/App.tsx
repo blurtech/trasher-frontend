@@ -35,7 +35,7 @@ const App = (props: IProps) => {
   return (
     <>
       {isAuth ? (
-        <AdminPanel currentUser={user} />
+        <AdminPanel currentUser={user} logout={() => {setAuth(false)}}/>
       ) : (
         <div className={styles.App}>
           <Auth setAuth={() => setAuth(true)} />

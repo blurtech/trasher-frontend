@@ -7,6 +7,7 @@ import LitterStorageStoreService from "../../classes/services/LitterStorageStore
 
 interface IProps {
   currentUser: IUser;
+  logout?: any
 }
 
 const AdminPanel = (props: IProps | any) => {
@@ -34,7 +35,7 @@ const AdminPanel = (props: IProps | any) => {
       height: document.documentElement.clientHeight-20,
       margin: -8
     }}>
-      <Menu pointData={pointData} user={user}/>
+      <Menu pointData={pointData} user={user} logout={props.logout}/>
       {litterStorages.length > 0 && (
         <Map city={user && user.city} points={litterStorages} setPoint={(data:any) => {setPointData(data)}} />
       )}
