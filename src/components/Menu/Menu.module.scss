@@ -2,6 +2,35 @@
 
 .fullMenu {
   display: flex;
+  margin-left: 220px;
+
+  &--closed {
+    margin-left: 5px;
+  }
+}
+
+.button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    &--closed {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+}
+
+.headerMenu {
+  display: inline-flex
+}
+
+.backBTN {
+  margin: 3px;
+}
+
+.drawerHeader {
+  margin:5px;
 }
 
 .collapseButton {
@@ -26,4 +55,13 @@
   &Open {
     width: 350px;
   }
+}
+
+.input {
+  margin-left: 25px;
+  margin-right: 5px;
+}
+
+.drawer {
+  max-width: 358px;
 }

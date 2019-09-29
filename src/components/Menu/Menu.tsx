@@ -2,36 +2,47 @@ import React from 'react';
 import {
   Divider,
   Drawer,
+  IconButton,
+  InputBase,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
+  Paper,
+  Button
 } from '@material-ui/core';
 import styles from './Menu.module.scss';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import Icon from '@iconify/react';
 import chevronLeft from '@iconify/icons-mdi/chevron-left';
 import chevronRight from '@iconify/icons-mdi/chevron-right';
-import { clearUser, getUser } from '../../classes/helpers/StorageHelper';
-import nanoid from 'nanoid';
-import { appUpdateState } from '../../store';
+import { clearUser } from '../../classes/helpers/StorageHelper';
+import { appUpdateState} from '../../store';
+import SearchIcon from '@material-ui/icons/Search';
+import { IUser } from '../../classes/models/IUser';
 
-const Menu = () => {
-  const [open, setOpen] = React.useState<boolean>(true);
+interface IProps {
+    user?: IUser
+    pointData?: any
+    logout?: any
+    open: boolean
+}
 
-  const handleOpen = () => setOpen(prevState => !prevState);
+const Menu = (props: IProps) => {
+  const [open, setOpen] = React.useState<boolean>(props.open);
+  const [user, setUser] = React.useState<IUser | undefined>(undefined);
+
+  React.useEffect(() => {
+    setUser(props.user);
+  }, [props.user]);
+
+  React.useEffect(() => {
+    setOpen(true)
+  }, [props.open]);
+
+  const handleOpen = (where:boolean) => setOpen(where);
 
   return (
-    <div className={styles.fullMenu}>
-      <div className={open ? styles.collapseButtonOpen : styles.collapseButton}>
-        <div
-          className={open ? styles.buttonOpen : styles.button}
-          onClick={handleOpen}
-        >
-          {open ? <Icon icon={chevronLeft} /> : <Icon icon={chevronRight} />}
-        </div>
-      </div>
+    <div>
+       
       <div className={open ? styles.menuOpen : styles.menu}>
         <Drawer
           className={styles.drawer}
@@ -42,39 +53,44 @@ const Menu = () => {
             paper: styles.drawerPaper,
           }}
         >
-          <div className={styles.drawerHeader}></div>
-          <Divider />
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-            <ListItem
-              button
-              key={nanoid(8)}
+          <div className={styles.drawerHeader}>
+            <div className={styles.headerMenu}>
+            <Paper className={styles.root}>
+              <InputBase
+                className={styles.input}
+                placeholder="Поиск в Trasher"
+                inputProps={{ 'aria-label': 'Поиск в Trasher' }}
+              />
+              <IconButton className={styles.iconButton} aria-label="search">
+                <SearchIcon />
+              </IconButton>
+              <Button
+              variant="outlined"
               onClick={() => {
                 clearUser();
+                props.logout();
                 appUpdateState(s => {
                   s.currentUser = {};
                 });
               }}
+              >
+                Log out
+              </Button>
+            </Paper>
+            <div className={styles.backBTN} onClick={()=>handleOpen(false)}><Icon icon={chevronLeft} /></div>
+            </div>
+            
+
+          </div>
+          <Divider />
+          <List>
+          <ListItem
             >
-              <ListItemText primary={'Logout'} />
+              <ListItemText secondary={user && user.address && `Вы вошли как ${user.username}, вы оператор города ${user.address.city}`} />
+            </ListItem>
+            <ListItem
+            >
+              <ListItemText primary={props.pointData && <span>{`${props.pointData.lat} ${props.pointData.lng}`}</span> } />
             </ListItem>
           </List>
         </Drawer>

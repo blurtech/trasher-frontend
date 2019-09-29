@@ -1,10 +1,9 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import Modal, {IPoint} from '../Modal/Modal';
+import Modal, { IPoint } from '../Modal/Modal';
 import styles from './Map.module.scss';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
-import { Icon } from '@iconify/react';
-import recycleIcon from '@iconify/icons-mdi/recycle';
+import recycleIcon from './Point24.svg';
 import nanoid from 'nanoid';
 import { ILitterStorage } from '../../classes/models/ILitterStorage';
 
@@ -16,32 +15,60 @@ interface IClickEventValue {
   event: object;
 }
 
-const Point = (props: any) => (
-  <Icon height={40} width={40} icon={recycleIcon} />
-);
+const Point = (props: any) => <img height={40} width={40} src={recycleIcon} />;
 
 interface IProps {
   points: ILitterStorage[];
   city: string;
+  setPoint?: any;
+}
+
+interface IPoints {
+  points: ILitterStorage[];
+  sorted: ILitterStorage[];
 }
 
 const Map = (props: GeolocatedProps | IProps | any) => {
-  const [points, setPoints] = React.useState<ILitterStorage[]>([]);
+  const [points, setPoints] = React.useState<IPoints>();
   const [currentPoint, setCurrentPoint] = React.useState<IPoint | undefined>();
+  const [filter, setFilter] = React.useState<number[]>([
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+  ]);
 
   const handleClick = (value: IClickEventValue) => {
     setCurrentPoint({ lat: value.lat, lng: value.lng });
+    props.setPoint({ lat: value.lat, lng: value.lng });
   };
 
   React.useEffect(() => {
-    console.log(currentPoint);
-  }, [currentPoint]);
-
-  React.useEffect(() => {
-    props.points && setPoints(props.points);
+    props.points && setPoints({ points: props.points, sorted: props.points });
   }, [props.points]);
 
-  console.log(points.length > 0, points);
+  console.log(points);
+
+  React.useEffect(() => {
+    points &&
+      setPoints({
+        points: points.points,
+        sorted: points.sorted.filter(
+          (point: ILitterStorage) =>
+            point.containers &&
+            point.containers.every(cont => filter.includes(cont))
+        ),
+      });
+    console.log('hooked');
+  }, [filter]);
+
   return (
     <>
       {props.coords && process.env.REACT_APP_API_KEY && (
@@ -58,8 +85,8 @@ const Map = (props: GeolocatedProps | IProps | any) => {
           yesIWantToUseGoogleMapApiInternals
           onClick={handleClick}
         >
-          {points.length > 0 &&
-            points.map(point => (
+          {points &&
+            points.sorted.map((point: ILitterStorage) => (
               <Point
                 lat={point.latlng && point.latlng.latitude}
                 lng={point.latlng && point.latlng.longitude}
@@ -68,19 +95,6 @@ const Map = (props: GeolocatedProps | IProps | any) => {
             ))}
         </GoogleMapReact>
       )}
-      {currentPoint ? (
-        <>
-          <div
-            className={styles.ModalBackground}
-            style={{
-              height: document.documentElement.clientHeight,
-              width: document.documentElement.clientWidth,
-            }}
-            onClick={() => setCurrentPoint(undefined)}
-          />
-          <Modal {...currentPoint} />
-        </>
-      ) : null}
     </>
   );
 };

@@ -2,9 +2,8 @@ import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 import { IUser } from '../classes/models/IUser';
-import { register, auth } from '../classes/services/api/UserApi';
-import { appUpdateState } from '../store';
-import { setUserLocal } from '../classes/helpers/StorageHelper';
+import UserStoreService from '../classes/services/UserStoreService';
+import Cities from './Auth/Cities';
 
 enum Form {
   Login = 'login',
@@ -50,29 +49,23 @@ const Auth = (props: IProps) => {
         onChange={handleChange}
       />
       {form === 'register' ? (
-        <>
-          <TextField
-            name="city"
-            label="Город"
-            className={styles.textField}
-            margin="normal"
-            onChange={event =>
+        <Cities
+          onChange={(item: any) =>{
+              console.log(item)
               user
-                ? setUser(
-                    Object.assign(user, {
-                      address: {
-                        [event.target.name]: event.target.value,
-                      },
-                    })
-                  )
-                : setUser({
-                    address: {
-                      [event.target.name]: event.target.value,
-                    },
-                  })
-            }
-          />
-        </>
+              ? setUser({
+                  ...user,
+                  address: {
+                    city: item.value,
+                  },
+                })
+              : setUser({
+                  address: {
+                    city: item.value,
+                  },
+                })}
+          }
+        />
       ) : (
         <></>
       )}
@@ -80,20 +73,13 @@ const Auth = (props: IProps) => {
         {form === 'login' ? (
           <Button
             variant="contained"
+            color="primary"
             className={styles.button}
             onClick={() => {
               setMessage(undefined);
               user && user.username && user.password
-                ? auth(user).then(result => {
-                    const userResult = {
-                      ...result.data.user,
-                      token: result.data.token,
-                    };
-                    setUser(userResult);
-                    setUserLocal(JSON.stringify(userResult));
-                    appUpdateState(s => {
-                      s.currentUser = userResult;
-                    });
+                ? UserStoreService.authUser(user).then(result => {
+                    setUser(result);
                     props.setAuth();
                   })
                 : setMessage('Empty username or password');
@@ -109,20 +95,13 @@ const Auth = (props: IProps) => {
         {form === 'register' ? (
           <Button
             variant="contained"
+            color="primary"
             className={styles.button}
             onClick={() => {
               setMessage(undefined);
               user && user.username && user.password
-                ? register(user).then(result => {
-                    const userResult = {
-                      ...result.data.user,
-                      token: result.data.token,
-                    };
-                    setUser(userResult);
-                    setUserLocal(JSON.stringify(userResult));
-                    appUpdateState(s => {
-                      s.currentUser = userResult;
-                    });
+                ? UserStoreService.registerUser(user).then(result => {
+                    setUser(result);
                     props.setAuth();
                   })
                 : setMessage('Empty username or password');

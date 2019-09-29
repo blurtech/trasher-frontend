@@ -18,4 +18,5 @@ export interface IUser extends IForm {
   role?: string
   token?: string
   bags?: number
+  points?: number
 }
