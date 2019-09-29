@@ -20,13 +20,17 @@ const Point = (props: any) => <img height={40} width={40} src={recycleIcon} />;
 interface IProps {
   points: ILitterStorage[];
   city: string;
-  setPoint?: any
+  setPoint?: any;
+}
+
+interface IPoints {
+  points: ILitterStorage[];
+  sorted: ILitterStorage[];
 }
 
 const Map = (props: GeolocatedProps | IProps | any) => {
-  const [points, setPoints] = React.useState<ILitterStorage[]>([]);
+  const [points, setPoints] = React.useState<IPoints>();
   const [currentPoint, setCurrentPoint] = React.useState<IPoint | undefined>();
-  const [sortedPoints, setSortedPoints] = React.useState<ILitterStorage[]>([]);
   const [filter, setFilter] = React.useState<number[]>([
     1,
     2,
@@ -43,23 +47,26 @@ const Map = (props: GeolocatedProps | IProps | any) => {
 
   const handleClick = (value: IClickEventValue) => {
     setCurrentPoint({ lat: value.lat, lng: value.lng });
-    props.setPoint({ lat: value.lat, lng: value.lng })
+    props.setPoint({ lat: value.lat, lng: value.lng });
   };
 
   React.useEffect(() => {
-    props.points && setPoints(props.points);
-    console.log(props.points);
-    setSortedPoints(props.points);
+    props.points && setPoints({ points: props.points, sorted: props.points });
   }, [props.points]);
 
+  console.log(points);
+
   React.useEffect(() => {
-    setSortedPoints(
-      points.filter(
-        point =>
-          point.containers &&
-          point.containers.every(cont => filter.includes(cont))
-      )
-    );
+    points &&
+      setPoints({
+        points: points.points,
+        sorted: points.sorted.filter(
+          (point: ILitterStorage) =>
+            point.containers &&
+            point.containers.every(cont => filter.includes(cont))
+        ),
+      });
+    console.log('hooked');
   }, [filter]);
 
   return (
@@ -78,8 +85,8 @@ const Map = (props: GeolocatedProps | IProps | any) => {
           yesIWantToUseGoogleMapApiInternals
           onClick={handleClick}
         >
-          {sortedPoints.length > 0 &&
-            sortedPoints.map(point => (
+          {points &&
+            points.sorted.map((point: ILitterStorage) => (
               <Point
                 lat={point.latlng && point.latlng.latitude}
                 lng={point.latlng && point.latlng.longitude}
