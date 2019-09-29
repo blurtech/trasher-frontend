@@ -14,6 +14,7 @@ interface IProps {
 }
 
 const App = (props: IProps) => {
+  
   const [user, setUser] = useState<IUser | undefined>(
     getUser().length > 0 ? JSON.parse(getUser()) : undefined
   );
