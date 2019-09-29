@@ -6,23 +6,30 @@ import {
   InputBase,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Paper,
 } from '@material-ui/core';
 import styles from './Menu.module.scss';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import Icon from '@iconify/react';
 import chevronLeft from '@iconify/icons-mdi/chevron-left';
 import chevronRight from '@iconify/icons-mdi/chevron-right';
 import { clearUser } from '../../classes/helpers/StorageHelper';
 import nanoid from 'nanoid';
-import { appUpdateState } from '../../store';
+import { appUpdateState} from '../../store';
 import SearchIcon from '@material-ui/icons/Search';
+import { IUser } from '../../classes/models/IUser';
 
-const Menu = () => {
+interface IProps {
+    user?: IUser
+}
+
+const Menu = (props: IProps) => {
   const [open, setOpen] = React.useState<boolean>(true);
+  const [user, setUser] = React.useState<IUser | undefined>(undefined);
+
+  React.useEffect(() => {
+    setUser(props.user);
+  }, [props.user]);
 
   const handleOpen = () => setOpen(prevState => !prevState);
 
@@ -50,13 +57,16 @@ const Menu = () => {
             <Paper className={styles.root}>
               <InputBase
                 className={styles.input}
-                placeholder="Поиск"
-                inputProps={{ 'aria-label': 'Поиск' }}
+                placeholder="Поиск в Trasher"
+                inputProps={{ 'aria-label': 'Поиск в Trasher' }}
               />
               <IconButton className={styles.iconButton} aria-label="search">
                 <SearchIcon />
               </IconButton>
             </Paper>
+          </div>
+          <div>
+              {user && user.address && `Вы вошли как ${user.username}, вы оператор города ${user.address.city}`}
           </div>
           <Divider />
           <List>

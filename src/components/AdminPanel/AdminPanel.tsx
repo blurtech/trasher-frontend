@@ -38,8 +38,7 @@ const AdminPanel = (props: IProps | any) => {
       height: document.documentElement.clientHeight-20,
       margin: -8
     }}>
-      {user && user.username}
-      <Menu />
+      <Menu user={user}/>
       {litterStorages.length > 0 && (
         <Map city={user && user.city} points={litterStorages} />
       )}
