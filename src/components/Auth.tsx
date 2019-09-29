@@ -78,6 +78,7 @@ const Auth = (props: IProps) => {
         {form === 'login' ? (
           <Button
             variant="contained"
+            color="primary"
             className={styles.button}
             onClick={() => {
               setMessage(undefined);

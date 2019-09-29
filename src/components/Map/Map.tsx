@@ -46,6 +46,7 @@ const Map = (props: GeolocatedProps | IProps | any) => {
 
   React.useEffect(() => {
     props.points && setPoints(props.points);
+    console.log(props.points);
     setSortedPoints(props.points);
   }, [props.points]);
 
