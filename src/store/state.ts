@@ -6,12 +6,14 @@ export const initialState = {
   currentUser: {},
   litterStorages: [],
   litterTypes: [],
+  cities: [],
 };
 
 export interface IState {
   currentUser: IUser;
   litterStorages: ILitterStorage[];
   litterTypes: ILitterType[];
+  cities: string[];
 }
 
 export interface IAppState {

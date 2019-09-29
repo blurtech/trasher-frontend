@@ -18,20 +18,12 @@ import { SingleValueProps } from 'react-select/src/components/SingleValue'
 import { ValueType } from 'react-select/src/types'
 import { Omit } from '@material-ui/types'
 import styles from './Cities.module.scss'
+import StatisticsStoreService from "../../classes/services/StatisticsStoreService";
 
 interface OptionType {
   label: string
   value: string
 }
-
-const suggestions: OptionType[] = [
-  { label: 'Новосибирск' },
-  { label: 'Казань' },
-  { label: 'Москва' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}))
 
 const NoOptionsMessage = (props: NoticeProps<OptionType>) => {
   return (
@@ -173,6 +165,20 @@ interface IProps {
 const Cities = (props: IProps) => {
   const { onChange } = props;
   const [single, setSingle] = React.useState<ValueType<OptionType>>(null);
+  const [cities, setCities] = React.useState<OptionType[]>([]);
+
+  React.useEffect(()=>{
+    StatisticsStoreService.getCities().then(
+        results => {
+          console.log(results)
+          const citiesArray = results.items.map(suggestion => ({
+            value: suggestion,
+            label: suggestion,
+          }))
+          setCities(citiesArray)
+        }
+    )
+  }, [])
 
   const handleChangeSingle = (value: ValueType<OptionType>) => {
     setSingle(value);
@@ -205,7 +211,7 @@ const Cities = (props: IProps) => {
             },
           }}
           placeholder="Выберите город"
-          options={suggestions}
+          options={cities}
           components={components}
           value={single}
           onChange={handleChangeSingle}
