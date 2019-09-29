@@ -2,9 +2,7 @@ import React from 'react';
 import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 import { IUser } from '../classes/models/IUser';
-import { register, auth } from '../classes/services/api/UserApi';
-import { appUpdateState } from '../store';
-import { setUserLocal } from '../classes/helpers/StorageHelper';
+import UserStoreService from "../classes/services/UserStoreService";
 
 enum Form {
   Login = 'login',
@@ -84,16 +82,8 @@ const Auth = (props: IProps) => {
             onClick={() => {
               setMessage(undefined);
               user && user.username && user.password
-                ? auth(user).then(result => {
-                    const userResult = {
-                      ...result.data.user,
-                      token: result.data.token,
-                    };
-                    setUser(userResult);
-                    setUserLocal(JSON.stringify(userResult));
-                    appUpdateState(s => {
-                      s.currentUser = userResult;
-                    });
+                ? UserStoreService.authUser(user).then(result => {
+                    setUser(result);
                     props.setAuth();
                   })
                 : setMessage('Empty username or password');
@@ -113,16 +103,8 @@ const Auth = (props: IProps) => {
             onClick={() => {
               setMessage(undefined);
               user && user.username && user.password
-                ? register(user).then(result => {
-                    const userResult = {
-                      ...result.data.user,
-                      token: result.data.token,
-                    };
-                    setUser(userResult);
-                    setUserLocal(JSON.stringify(userResult));
-                    appUpdateState(s => {
-                      s.currentUser = userResult;
-                    });
+                ? UserStoreService.registerUser(user).then(result => {
+                    setUser(result);
                     props.setAuth();
                   })
                 : setMessage('Empty username or password');
