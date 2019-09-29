@@ -1,10 +1,9 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import Modal, {IPoint} from '../Modal/Modal';
+import Modal, { IPoint } from '../Modal/Modal';
 import styles from './Map.module.scss';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
-import { Icon } from '@iconify/react';
-import recycleIcon from '@iconify/icons-mdi/recycle';
+import recycleIcon from './Point24.svg';
 import nanoid from 'nanoid';
 import { ILitterStorage } from '../../classes/models/ILitterStorage';
 
@@ -16,9 +15,7 @@ interface IClickEventValue {
   event: object;
 }
 
-const Point = (props: any) => (
-  <Icon height={40} width={40} icon={recycleIcon} />
-);
+const Point = (props: any) => <img height={40} width={40} src={recycleIcon} />;
 
 interface IProps {
   points: ILitterStorage[];
@@ -28,20 +25,40 @@ interface IProps {
 const Map = (props: GeolocatedProps | IProps | any) => {
   const [points, setPoints] = React.useState<ILitterStorage[]>([]);
   const [currentPoint, setCurrentPoint] = React.useState<IPoint | undefined>();
+  const [sortedPoints, setSortedPoints] = React.useState<ILitterStorage[]>([]);
+  const [filter, setFilter] = React.useState<number[]>([
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+  ]);
 
   const handleClick = (value: IClickEventValue) => {
     setCurrentPoint({ lat: value.lat, lng: value.lng });
   };
 
   React.useEffect(() => {
-    console.log(currentPoint);
-  }, [currentPoint]);
-
-  React.useEffect(() => {
     props.points && setPoints(props.points);
+    setSortedPoints(props.points);
   }, [props.points]);
 
-  console.log(points.length > 0, points);
+  React.useEffect(() => {
+    setSortedPoints(
+      points.filter(
+        point =>
+          point.containers &&
+          point.containers.every(cont => filter.includes(cont))
+      )
+    );
+  }, [filter]);
+
   return (
     <>
       {props.coords && process.env.REACT_APP_API_KEY && (
@@ -58,8 +75,8 @@ const Map = (props: GeolocatedProps | IProps | any) => {
           yesIWantToUseGoogleMapApiInternals
           onClick={handleClick}
         >
-          {points.length > 0 &&
-            points.map(point => (
+          {sortedPoints.length > 0 &&
+            sortedPoints.map(point => (
               <Point
                 lat={point.latlng && point.latlng.latitude}
                 lng={point.latlng && point.latlng.longitude}
