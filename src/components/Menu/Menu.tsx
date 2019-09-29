@@ -8,21 +8,22 @@ import {
   ListItem,
   ListItemText,
   Paper,
-  Button
+  Button,
 } from '@material-ui/core';
 import styles from './Menu.module.scss';
 import Icon from '@iconify/react';
 import chevronLeft from '@iconify/icons-mdi/chevron-left';
 import chevronRight from '@iconify/icons-mdi/chevron-right';
 import { clearUser } from '../../classes/helpers/StorageHelper';
-import { appUpdateState} from '../../store';
+import { appUpdateState } from '../../store';
 import SearchIcon from '@material-ui/icons/Search';
 import { IUser } from '../../classes/models/IUser';
 
 interface IProps {
-    user?: IUser
-    pointData?: any
-    logout?: any
+  user?: IUser;
+  pointData?: any;
+  logout?: any;
+  litterStorageData?: any;
 }
 
 const Menu = (props: IProps) => {
@@ -35,6 +36,7 @@ const Menu = (props: IProps) => {
 
   const handleOpen = () => setOpen(prevState => !prevState);
 
+  console.log(props.litterStorageData);
   return (
     <div className={open ? styles.fullMenu : styles['fullMenu--closed']}>
       <div className={open ? styles.collapseButtonOpen : styles.collapseButton}>
@@ -66,14 +68,14 @@ const Menu = (props: IProps) => {
                 <SearchIcon />
               </IconButton>
               <Button
-              variant="outlined"
-              onClick={() => {
-                clearUser();
-                props.logout();
-                appUpdateState(s => {
-                  s.currentUser = {};
-                });
-              }}
+                variant="outlined"
+                onClick={() => {
+                  clearUser();
+                  props.logout();
+                  appUpdateState(s => {
+                    s.currentUser = {};
+                  });
+                }}
               >
                 Log out
               </Button>
@@ -81,13 +83,25 @@ const Menu = (props: IProps) => {
           </div>
           <Divider />
           <List>
-          <ListItem
-            >
-              <ListItemText secondary={user && user.address && `Вы вошли как ${user.username}, вы оператор города ${user.address.city}`} />
+            <ListItem>
+              <ListItemText
+                secondary={
+                  user &&
+                  user.address &&
+                  `Вы вошли как ${user.username}, вы оператор города ${user.address.city}`
+                }
+              />
             </ListItem>
-            <ListItem
-            >
-              <ListItemText primary={props.pointData && <span>{`${props.pointData.lat} ${props.pointData.lng}`}</span> } />
+            <ListItem>
+              <ListItemText
+                primary={
+                  props.litterStorageData && (
+                    <>
+                      <span>{`${props.litterStorageData.title}`}</span>
+                    </>
+                  )
+                }
+              />
             </ListItem>
           </List>
         </Drawer>

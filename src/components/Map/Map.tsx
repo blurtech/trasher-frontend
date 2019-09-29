@@ -1,6 +1,6 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
-import Modal, { IPoint } from '../Modal/Modal';
+import { IPoint } from '../Modal/Modal';
 import styles from './Map.module.scss';
 import { geolocated, GeolocatedProps } from 'react-geolocated';
 import recycleIcon from './Point24.svg';
@@ -15,12 +15,11 @@ interface IClickEventValue {
   event: object;
 }
 
-const Point = (props: any) => <img height={40} width={40} src={recycleIcon} />;
-
 interface IProps {
   points: ILitterStorage[];
   city: string;
   setPoint?: any;
+  setLitterStorage?: (arg0: any) => void;
 }
 
 interface IPoints {
@@ -45,6 +44,19 @@ const Map = (props: GeolocatedProps | IProps | any) => {
     11,
   ]);
 
+  const Point = (props: any) => (
+    <img
+      onClick={() => {
+        props.setLitterStorage(props.point);
+        console.log(props.point);
+      }}
+      height={40}
+      width={40}
+      style={{ cursor: 'pointer' }}
+      src={recycleIcon}
+    />
+  );
+
   const handleClick = (value: IClickEventValue) => {
     setCurrentPoint({ lat: value.lat, lng: value.lng });
     props.setPoint({ lat: value.lat, lng: value.lng });
@@ -53,8 +65,6 @@ const Map = (props: GeolocatedProps | IProps | any) => {
   React.useEffect(() => {
     props.points && setPoints({ points: props.points, sorted: props.points });
   }, [props.points]);
-
-  console.log(points);
 
   React.useEffect(() => {
     points &&
@@ -66,7 +76,6 @@ const Map = (props: GeolocatedProps | IProps | any) => {
             point.containers.every(cont => filter.includes(cont))
         ),
       });
-    console.log('hooked');
   }, [filter]);
 
   return (
@@ -88,9 +97,11 @@ const Map = (props: GeolocatedProps | IProps | any) => {
           {points &&
             points.sorted.map((point: ILitterStorage) => (
               <Point
+                setLitterStorage={props.setLitterStorage}
                 lat={point.latlng && point.latlng.latitude}
                 lng={point.latlng && point.latlng.longitude}
                 key={nanoid(8)}
+                point={point}
               />
             ))}
         </GoogleMapReact>

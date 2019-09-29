@@ -16,6 +16,7 @@ const AdminPanel = (props: IProps | any) => {
   const [litterStorages, setLitterStorages] = React.useState<ILitterStorage[]>(
     []
   );
+  const [litterStorage, setLitterStorage] = React.useState<ILitterStorage | undefined>(undefined)
 
   React.useEffect(() => {
     props.currentUser && setUser(props.currentUser);
@@ -35,9 +36,9 @@ const AdminPanel = (props: IProps | any) => {
       height: document.documentElement.clientHeight-20,
       margin: -8
     }}>
-      <Menu pointData={pointData} user={user} logout={props.logout}/>
+      <Menu pointData={pointData} user={user} litterStorageData={litterStorage} logout={props.logout}/>
       {litterStorages.length > 0 && (
-        <Map city={user && user.city} points={litterStorages} setPoint={(data:any) => {setPointData(data)}} />
+        <Map city={user && user.city} setLitterStorage={(item: any) => {setLitterStorage(item)}} points={litterStorages} setPoint={(data:any) => {setPointData(data)}} />
       )}
     </div>
   );

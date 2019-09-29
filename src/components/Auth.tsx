@@ -51,7 +51,6 @@ const Auth = (props: IProps) => {
       {form === 'register' ? (
         <Cities
           onChange={(item: any) =>{
-              console.log(item)
               user
               ? setUser({
                   ...user,
