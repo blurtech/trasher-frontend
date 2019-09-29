@@ -3,6 +3,7 @@ import { Button, TextField } from '@material-ui/core';
 import styles from './Auth.module.scss';
 import { IUser } from '../classes/models/IUser';
 import UserStoreService from "../classes/services/UserStoreService";
+import Cities from "./Auth/Cities";
 
 enum Form {
   Login = 'login',
@@ -17,6 +18,7 @@ const Auth = (props: IProps) => {
   const [form, setForm] = React.useState<Form>(Form.Login);
   const [user, setUser] = React.useState<IUser | undefined>(undefined);
   const [message, setMessage] = React.useState<string | undefined>(undefined);
+  const [city, setCity] = React.useState()
 
   const handleChange = (event: any) => {
     user
@@ -47,31 +49,8 @@ const Auth = (props: IProps) => {
         margin="normal"
         onChange={handleChange}
       />
-      {form === 'register' ? (
-        <>
-          <TextField
-            name="city"
-            label="Город"
-            className={styles.textField}
-            margin="normal"
-            onChange={event =>
-              user
-                ? setUser(
-                    Object.assign(user, {
-                      address: {
-                        [event.target.name]: event.target.value,
-                      },
-                    })
-                  )
-                : setUser({
-                    address: {
-                      [event.target.name]: event.target.value,
-                    },
-                  })
-            }
-          />
-        </>
-      ) : (
+      {form === 'register' ?
+        <Cities onChange={(item: any) => setCity(item)} />: (
         <></>
       )}
       <div className={styles.AuthButtons}>
@@ -100,6 +79,7 @@ const Auth = (props: IProps) => {
         {form === 'register' ? (
           <Button
             variant="contained"
+            color="primary"
             className={styles.button}
             onClick={() => {
               setMessage(undefined);
