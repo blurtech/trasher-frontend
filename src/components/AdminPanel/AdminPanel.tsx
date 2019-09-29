@@ -2,9 +2,8 @@ import React from 'react';
 import { IUser } from '../../classes/models/IUser';
 import Map from '../Map/Map';
 import Menu from '../Menu/Menu';
-import { fetchLitterStoragesByCity } from '../../classes/services/api/LitteStorageApi';
 import { ILitterStorage } from '../../classes/models/ILitterStorage';
-import { appUpdateState } from '../../store';
+import LitterStorageStoreService from "../../classes/services/LitterStorageStoreService";
 
 interface IProps {
   currentUser: IUser;
@@ -24,11 +23,8 @@ const AdminPanel = (props: IProps | any) => {
     user &&
       user.address &&
       user.address.city &&
-      fetchLitterStoragesByCity(user.address.city).then(data => {
+      LitterStorageStoreService.getLitterStoragesByCity(user.address.city).then(data => {
         setLitterStorages(data.items);
-        appUpdateState(s => {
-          s.litterStorages = data.items;
-        });
       });
   }, [user]);
 
